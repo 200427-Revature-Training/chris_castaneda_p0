@@ -8,10 +8,6 @@ jest.mock('../../src/daos/post-dao');
 /**Cast methods from postDao file */
 const mockPostDao = postDao as any;
 
- 
-
-
-/**Creating fake database object */
 
 /**READ ALL*/
 describe('GET: /pots', () => {
@@ -41,10 +37,7 @@ describe('GET: /posts/:id', () => {
             expect(result).toBeTruthy();
         }catch(err){
             expect(err).toBeDefined();
-        }
-        //expect(payload).not.toBeInstanceOf(Author); //Set to not author in input
-        //expect(result).toBeInstanceOf(Author); //Transformed to person in result
-        
+        }        
     }); 
 });
 
@@ -61,9 +54,6 @@ describe('GET: /posts/author/:id', () => {
         }catch(err){
             expect(err).toBeDefined();
         }
-        //expect(payload).not.toBeInstanceOf(Author); //Set to not author in input
-        //expect(result).toBeInstanceOf(Author); //Transformed to person in result
-        
     });
     
 });
@@ -129,7 +119,7 @@ describe('POST: /posts', () => {
     //Object Properties Failure Test
     test('Expected 422 returned if no authorId provided', async () => {
 
-        expect.assertions(1); //cleaner assertion syntax replacing mockPostDao function
+        expect.assertions(1); 
         const payload = {
             title: 'Title',
             body: 'Test'
@@ -139,15 +129,15 @@ describe('POST: /posts', () => {
 
         try{
             await postService.savePost(payload); 
-            fail('postService.savePost failed request'); //Reject savePost due to missing name
+            fail('postService.savePost failed request');
         }catch(err){
-            expect(err).toBeDefined(); //part of assertion syntax
+            expect(err).toBeDefined(); 
         }
     });
 
     //ID Validation Test
     test('Inserted ID field should fail', async () => {
-        mockPostDao.savePost.mockImplementation(input => input); //return its self object
+        mockPostDao.savePost.mockImplementation(input => input);
 
         const payload = {
             id: '15',
@@ -163,7 +153,7 @@ describe('POST: /posts', () => {
 
     //Inserting Extra Fields Test
     test('Inserted extra field should fail', async () => {
-        mockPostDao.savePost.mockImplementation(input => input); //return its self object
+        mockPostDao.savePost.mockImplementation(input => input);
 
         const payload = {
             title: 'Title',
@@ -194,8 +184,8 @@ describe('PATCH: /posts', () => {
         };
         const result = await postService.patchPost(payload);
 
-        expect(payload).not.toBeInstanceOf(Post); //Set to not author in input
-        expect(result).toBeInstanceOf(Post); //Transformed to person in result
+        expect(payload).not.toBeInstanceOf(Post);
+        expect(result).toBeInstanceOf(Post);
     });
 
     //Expected server error test
@@ -227,7 +217,6 @@ describe('DELETE: /posts/:id', () => {
     //Read success test
     test('Successful delete of id', async () => {
         expect.assertions(1);
-        //mockPostDao.savePost.mockImplementation(input => input);
 
         const result = await postService.deletePostById(1);
 
@@ -236,7 +225,5 @@ describe('DELETE: /posts/:id', () => {
         }catch(err){
             expect(err).toBeDefined();
         }
-        //expect(payload).not.toBeInstanceOf(Post); //Set to not post in input
-        //expect(result).toBeInstanceOf(Post); //Transformed to person in result
     });
 });

@@ -1,9 +1,10 @@
+/* istanbul ignore file */
 import { dbConnection} from '../daos/db';
 import { Author, AuthorRow } from '../models/Author';
 /**Database query logic */
 
 
-//Retrieve all
+/**Retrieve all */
 export function getAllAuthors(): Promise<Author[]> { //Promise<Author[]> returning promise
     const sql = 'SELECT * FROM authors'; //Query database
     
@@ -14,7 +15,7 @@ export function getAllAuthors(): Promise<Author[]> { //Promise<Author[]> returni
     });
 };
 
-//Retrieve by Id
+/**Retrieve by Id */
 export function getAuthorById(id: number): Promise<Author> {
     const sql = 'SELECT * FROM authors WHERE id = $1'; //Parameterize queries
 
@@ -26,7 +27,7 @@ export function getAuthorById(id: number): Promise<Author> {
 interface Exists {
     exists: boolean;
 };
-//Valid author by id in database
+/**Valid author by id in database */
 export async function authorExists(authorId: number): Promise<boolean> {
     const sql = `SELECT EXISTS(SELECT id FROM authors WHERE id = $1)`; //Validate user via database by boolean
     
@@ -34,7 +35,7 @@ export async function authorExists(authorId: number): Promise<boolean> {
     return result.rows[0].exists; //if boolean: 0, user exists
 };
 
-//Insert
+/**Insert */
 export function saveAuthor(author: Author): Promise<Author> {
     const sql = `INSERT INTO authors (first_name, last_name, email) \
     VALUES ($1, $2, $3) RETURNING *`; //Returning Data after insertion 
@@ -46,7 +47,7 @@ export function saveAuthor(author: Author): Promise<Author> {
     ]).then(result => result.rows.map(row => Author.from(row))[0]);
 };
 
-//Update by sql coalesce
+/**Update by sql coalesce */
 export function patchAuthor(author: Author): Promise<Author> {
     const sql = `UPDATE authors SET \
                 first_name = COALESCE($2, first_name), \
@@ -62,7 +63,7 @@ export function patchAuthor(author: Author): Promise<Author> {
     ]).then(result => result.rows.map(row => Author.from(row))[0]);
 };
 
-//Delete by Id
+/**Delete by Id */
 export function deleteAuthorById(id: number): Promise<Author> {
     const sql = `DELETE FROM authors WHERE id = $1 RETURNING *`;
 

@@ -4,23 +4,23 @@ import { AuthorsPosts } from '../models/AuthorsPosts';
 /**Application Logic */
 
 
-//READ all by id
+/**READ all by id */
 export function getAllPosts(): Promise<Post[]> { //Promise<Post[]> returning array promise from doa's
     //Apply internal logic here(user privalleges/rules/authentication)
     return postDao.getAllPosts();
 };
 
-//Reference post object by database id 
+/**Reference post object by database id */
 export function getPostById(id: number): Promise<Post[]> {
     return postDao.getPostById(id);
 };
 
-/*Reference post object by database author id*/
+/**Reference post object by database author id*/
 export function getPostByAuthorId(authorId: number): Promise<AuthorsPosts[]> {
     return postDao.getPostByAuthorId(authorId);
 };
 
-//Create database object
+/**Create database object */
 export function savePost(post: any): Promise<Post> {
     const newPost = new Post ( //create object from service request
         undefined, //set undefined id to prevent sql injection
@@ -38,7 +38,7 @@ export function savePost(post: any): Promise<Post> {
     }
 };
 
-//Update by object properties
+/**Update by object properties */
 export function patchPost(properties: any): Promise<Post> {
     const post = new Post(
         properties.id,
@@ -55,7 +55,7 @@ export function patchPost(properties: any): Promise<Post> {
     }
 };
 
-//Delete by Id
+/**Delete by Id */
 export function deletePostById(id: number): Promise<Post> {
     return postDao.deletePostById(id);
 };

@@ -5,10 +5,6 @@ import { AuthorsPosts } from '../models/AuthorsPosts';
 /**Export post from database */
 export const postRouter = express.Router();
 
-
-
-/**CRUD from database */
-
 /**READ All */
 postRouter.get('', (request, response, next) => { //localhost:3000/post
     postService.getAllPosts()
@@ -17,7 +13,6 @@ postRouter.get('', (request, response, next) => { //localhost:3000/post
                 response.json(posts); //store in json
                 next();
             }).catch(err => {//Request error handler
-                //console.log(err);
                 response.sendStatus(500);
         });
 });
@@ -31,7 +26,6 @@ postRouter.get('/:id', async (request, response, next) => { //request promise wi
         posts = await postService.getPostById(id); //unwrap promise
     }catch(err){
         response.sendStatus(500); //send status promise not met
-        //console.log(err);
         return;
     }
     
@@ -43,21 +37,20 @@ postRouter.get('/:id', async (request, response, next) => { //request promise wi
     next();
 });
 
-//Read posts by author
+/**Read posts by author */
 postRouter.get('/authors/:id', async (request, response, next) => { //request promise with async
     const authorId: number = parseInt(request.params.id);
     let posts: AuthorsPosts[];
 
     try {
-        posts = await postService.getPostByAuthorId(authorId); //unwrap promise
+        posts = await postService.getPostByAuthorId(authorId); 
     }catch(err){
-        response.sendStatus(500); //send status promise not met
-        //console.log(err);
+        response.sendStatus(500); 
         return;
     }
     
     if(!posts){
-        response.sendStatus(404); //return undefined if author does not exist
+        response.sendStatus(404);
     }else{
         response.json(posts);
     }
@@ -74,7 +67,6 @@ postRouter.post('', (request, response, next) => { //localhost:3000/post
             response.json(newPost); //return new object
             next();
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500);
             next();
         }); 
@@ -92,7 +84,6 @@ postRouter.patch('', (request, response, next) => {
                 response.json(updatedPost);
             }
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500);
         }).finally(() => {
             next();
@@ -108,11 +99,9 @@ postRouter.delete('/:id', (request, response, next) => {
             if(!post){ 
                 response.sendStatus(404);//if object does not exist
             }else{
-                //console.log(`Post deleted at id:${id}`);
                 response.json(post);
             }
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500); //if recieving datbase issue's
             next();
         });

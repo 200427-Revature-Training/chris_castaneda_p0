@@ -4,10 +4,6 @@ import * as authorService from '../services/author-service';
 /**Export authors from database */
 export const authorRouter = express.Router();
 
-
-
-/**CRUD from database */
-
 /**READ All */
 authorRouter.get('', (request, response, next) => { //localhost:3000/author
     authorService.getAllAuthors()
@@ -16,7 +12,6 @@ authorRouter.get('', (request, response, next) => { //localhost:3000/author
                 response.json(authors); //store in json
                 next();
             }).catch(err => {//Request error handler
-                //console.log(err);
                 response.sendStatus(500);
         });
 });
@@ -34,7 +29,6 @@ authorRouter.get('/:id', (request, response, next) => { //localhost:3000/author/
             }
             next();
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500); //if recieving datbase issue's
             next();
         });
@@ -50,7 +44,6 @@ authorRouter.post('', (request, response, next) => { //localhost:3000/author
             response.json(newAuthor); //return new object
             next();
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500);
             next();
         }); 
@@ -68,7 +61,6 @@ authorRouter.patch('', (request, response, next) => {
                 response.json(updatedAuthor);
             }
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500);
         }).finally(() => {
             next();
@@ -88,7 +80,6 @@ authorRouter.delete('/:id', (request, response, next) => {
                 response.json(author);
             }
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500); //if recieving datbase issue's
             next();
         });

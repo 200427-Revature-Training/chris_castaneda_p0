@@ -6,7 +6,7 @@ export class Comment {
     postId: number;
     authorId: number;
 
-    //Create new JS instance object from database schema
+    /**Create new JS instance object from database schema */
     static from(object: CommentRow): Comment {
         const comment = new Comment(
             object.id, 
@@ -18,7 +18,7 @@ export class Comment {
         return comment;
     };
 
-    //Project constructor
+    /**Project constructor */
     constructor(id: number, comment: string, published: Date, postId: number, authorId: number) {
         this.id = id;
         this.comment = comment;

@@ -5,7 +5,7 @@ export class Author {
     lastName: string;
     email: string;
 
-    //Create new JS instance object from database schema
+    /**Create new JS instance object from database schema */
     static from(object: AuthorRow): Author {
         const author = new Author(
             object.id, object.first_name, object.last_name, object.email
@@ -13,7 +13,7 @@ export class Author {
         return author;
     };
 
-    //Project constructor
+    /**Project constructor */
     constructor(id: number, firstName: string, lastName: string, email: string) {
         this.id = id;
         this.firstName = firstName;

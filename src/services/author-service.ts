@@ -9,13 +9,13 @@ export function getAllAuthors(): Promise<Author[]> { //Promise<Author[]> returni
     return authorDao.getAllAuthors();
 };
 
-//READ/reference author object by database id
+/**READ/reference author object by database id */
 export function getAuthorById(id: number): Promise<Author> {
     //Apply internal logic here(user privalleges/rules/authentication)
     return authorDao.getAuthorById(id);
 };
 
-//Create database object
+/**Create database object */
 export function saveAuthor(author: any): Promise<Author> {
     const newAuthor = new Author ( //create object from service request
         undefined, //set undefined id to prevent sql injection
@@ -32,7 +32,7 @@ export function saveAuthor(author: any): Promise<Author> {
     }
 };
 
-//Update by object properties
+/**Update by object properties */
 export function patchAuthor(properties: any): Promise<Author> {
     const author = new Author(
         properties.id,
@@ -48,7 +48,7 @@ export function patchAuthor(properties: any): Promise<Author> {
     }
 };
 
-//Delete by Id
+/**Delete by Id */
 export function deleteAuthorById(id: number): Promise<Author> {
     return authorDao.deleteAuthorById(id);
 };

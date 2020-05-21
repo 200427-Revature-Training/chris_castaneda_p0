@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 /**Convert Postres Schema into Javascript Object */
 export class AuthorsPosts {
     postId: number;
@@ -8,7 +10,7 @@ export class AuthorsPosts {
     firstName: string;
     lastName: string;
 
-    //Create new JS instance object from database schema
+    /**Create new JS instance object from database schema */
     static from(object: AuthorsPostsRow): AuthorsPosts {
         const post = new AuthorsPosts(
             object.id, 
@@ -22,7 +24,7 @@ export class AuthorsPosts {
         return post;
     };
 
-    //Project constructor
+    /**Project constructor */
     constructor(postId: number, title: string, body: string, published: Date, authorId: number, firstName: string, lastName: string){
         this.postId = postId;
         this.title = title;

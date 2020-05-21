@@ -4,21 +4,21 @@ import { ArticleComments } from '../models/ArticleComments';
 /**Application Logic */
 
 
-//Read all comments by id
+/**Read all comments by id */
 export function getAllComments(): Promise<Comment[]> { //Promise<Comment[]> returning array promise from doa's
     //Apply internal logic here(user privalleges/rules/authentication)
     return commentDao.getAllComments();
 };
 
-//Reference comment object by database post id
+/**Reference comment object by database post id */
 export function getAllCommentsByPostId(postId: number): Promise<ArticleComments[]> {
     return commentDao.getAllCommentsByPostId(postId);
 };
 
-//Create database object
+/**Create database object */
 export function saveComment(comment: any): Promise<Comment> {
     const newComment = new Comment ( //create object from service request
-        undefined, //set undefined id to prevent sql injection
+        undefined, 
         comment.comment, 
         comment.published,
         comment.postId,
@@ -28,12 +28,11 @@ export function saveComment(comment: any): Promise<Comment> {
     if(comment.comment && comment.published && comment.postId && comment.authorId){ //Data is valid - submit to DAO
         return commentDao.saveComment(newComment);
     }else{
-        //console.log('Comment invalid');
         return new Promise((resolve, reject) => reject(422));
     }
 };
 
-//Update by object properties
+/**Update by object properties */
 export function patchComment(properties: any): Promise<Comment> {
     const comment = new Comment(
         properties.id,
@@ -50,7 +49,7 @@ export function patchComment(properties: any): Promise<Comment> {
     }
 };
 
-//Delete by Id
+/**Delete by Id */
 export function deleteCommentById(id: number): Promise<Comment> {
     return commentDao.deleteCommentById(id);
 };

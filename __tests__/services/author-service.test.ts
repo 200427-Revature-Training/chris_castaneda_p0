@@ -9,10 +9,6 @@ jest.mock('../../src/daos/author-dao');
 const mockAuthorDao = authorDao as any;
  
 
-
-
-/**Creating fake database object */
-
 /**READ ALL*/
 describe('GET: /authors', () => {
     //Read success test
@@ -42,9 +38,6 @@ describe('GET: /authors/:id', () => {
         }catch(err){
             expect(err).toBeDefined();
         }
-        //expect(payload).not.toBeInstanceOf(Author); //Set to not author in input
-        //expect(result).toBeInstanceOf(Author); //Transformed to person in result
-        
     });
     
 });
@@ -90,7 +83,7 @@ describe('POST: /authors', () => {
     //Object Properties Failure Test
     test('Expected 422 returned if no lastName provided', async () => {
 
-        expect.assertions(1); //cleaner assertion syntax replacing mockAuthorDao function
+        expect.assertions(1); 
         const payload = {
             firstName: 'Test',
             email: 'testNew.Object@jest.com'
@@ -100,16 +93,16 @@ describe('POST: /authors', () => {
 
         try{
             await authorService.saveAuthor(payload); 
-            fail('authorService.saveAuthor failed request'); //Reject saveAuthor due to missing name
+            fail('authorService.saveAuthor failed request');
         }catch(err){
-            expect(err).toBeDefined(); //part of assertion syntax
+            expect(err).toBeDefined(); 
         }
     });
 
     //Object Properties Failure Test
     test('Expected 422 returned if no email provided', async () => {
 
-        expect.assertions(1); //cleaner assertion syntax replacing mockAuthorDao function
+        expect.assertions(1);
         const payload = {
             firstName: 'Test',
             lastName: 'Smith'
@@ -119,15 +112,15 @@ describe('POST: /authors', () => {
 
         try{
             await authorService.saveAuthor(payload); 
-            fail('authorService.saveAuthor failed request'); //Reject saveAuthor due to missing name
+            fail('authorService.saveAuthor failed request');
         }catch(err){
-            expect(err).toBeDefined(); //part of assertion syntax
+            expect(err).toBeDefined();
         }
     });
 
     //ID Validation Test
     test('Inserted ID field should fail', async () => {
-        mockAuthorDao.saveAuthor.mockImplementation(input => input); //return its self object
+        mockAuthorDao.saveAuthor.mockImplementation(input => input);
 
         const payload = {
             id: '15',
@@ -137,12 +130,12 @@ describe('POST: /authors', () => {
         };
         const result = await authorService.saveAuthor(payload);
 
-        expect(result.id).not.toBe(payload.id); //Compared id should be undefined.
+        expect(result.id).not.toBe(payload.id);
     });
 
     //Inserting Extra Fields Test
     test('Inserted extra field should fail', async () => {
-        mockAuthorDao.saveAuthor.mockImplementation(input => input); //return its self object
+        mockAuthorDao.saveAuthor.mockImplementation(input => input);
 
         const payload = {
             firstName: 'Test',
@@ -152,7 +145,7 @@ describe('POST: /authors', () => {
         };
         const result = await authorService.saveAuthor(payload)  as any;
 
-        expect(result.extraFieldInput).not.toBeDefined(); //Call extra property.
+        expect(result.extraFieldInput).not.toBeDefined();
     });
 });
 
@@ -160,7 +153,7 @@ describe('POST: /authors', () => {
 describe('PATCH: /authors', () => {
     //Object Success Test (BlackBox)
     test('Test object transformed to Person object', async () => {
-        mockAuthorDao.patchAuthor.mockImplementation(input => input); //return its self object
+        mockAuthorDao.patchAuthor.mockImplementation(input => input);
 
         const payload = {
             id: '1',
@@ -169,14 +162,13 @@ describe('PATCH: /authors', () => {
         };
         const result = await authorService.patchAuthor(payload);
 
-        expect(payload).not.toBeInstanceOf(Author); //Set to not author in input
-        expect(result).toBeInstanceOf(Author); //Transformed to person in result
+        expect(payload).not.toBeInstanceOf(Author);
+        expect(result).toBeInstanceOf(Author);
     });
 
      //Object Properties Failure Test(WhiteBox)
      test('Throw new Error status 400', async () => {
-        //expect.assertions(1);
-        mockAuthorDao.patchAuthor.mockReturnValue(undefined); //mockAuthorDao function returning undefined response
+        mockAuthorDao.patchAuthor.mockReturnValue(undefined);
         
         const payload = {
             lastName: 'Smith',
@@ -187,11 +179,11 @@ describe('PATCH: /authors', () => {
 
         try{
             await authorService.patchAuthor(payload);
-            fail('authorService.patchAuthor failed request'); //Reject patchAuthor due to missing name
+            fail('authorService.patchAuthor failed request');
         }catch(err){
-            expectedError = err; //Assign error object to expectedError
+            expectedError = err;
         }
-        expect(expectedError).toBeDefined(); //Validate error was thrown
+        expect(expectedError).toBeDefined(); 
     });
 });
 
@@ -200,7 +192,6 @@ describe('DELETE: /authors/:id', () => {
     //Read success test
     test('Successful delete of id', async () => {
         expect.assertions(1);
-        //mockAuthorDao.saveAuthor.mockImplementation(input => input);
 
         const result = await authorService.deleteAuthorById(1);
 
@@ -209,7 +200,5 @@ describe('DELETE: /authors/:id', () => {
         }catch(err){
             expect(err).toBeDefined();
         }
-        //expect(payload).not.toBeInstanceOf(Author); //Set to not author in input
-        //expect(result).toBeInstanceOf(Author); //Transformed to person in result
     });
 });

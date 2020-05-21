@@ -7,11 +7,7 @@ jest.mock('../../src/daos/comment-dao');
 
 /**Cast methods from commentDao file */
 const mockCommentDao = commentDao as any;
- 
 
-
-
-/**Creating fake database object */
 
 /**READ ALL*/
 describe('GET: /comments', () => {
@@ -42,9 +38,6 @@ describe('GET: /comments/posts/:id', () => {
         }catch(err){
             expect(err).toBeDefined();
         }
-        //expect(payload).not.toBeInstanceOf(Author); //Set to not author in input
-        //expect(result).toBeInstanceOf(Author); //Transformed to person in result
-        
     });
     
 });
@@ -81,17 +74,17 @@ describe('POST: /comment', () => {
 
         try{
             await commentService.saveComment(payload); 
-            fail('commentService.saveComment failed request'); //Reject saveComment due to missing authorId
+            fail('commentService.saveComment failed request');
         }catch(err){
-            expectedError = err; //Assign error object to expectedError
+            expectedError = err;
         }
-        expect(expectedError).toBeDefined(); //Validate error was thrown
+        expect(expectedError).toBeDefined();
     });
 
     //Object Properties Failure Test
     test('Expected 422 returned if no authorId provided', async () => {
 
-        expect.assertions(1); //cleaner assertion syntax replacing mockCommentDao function
+        expect.assertions(1);
         const payload = {
             comment: 'Title',
             published: '2020-0o1-0o1',
@@ -102,7 +95,7 @@ describe('POST: /comment', () => {
 
         try{
             await commentService.saveComment(payload); 
-            fail('commentService.saveComment failed request'); //Reject saveComment due to missing name
+            fail('commentService.saveComment failed request');
         }catch(err){
             expect(err).toBeDefined(); //part of assertion syntax
         }
@@ -122,15 +115,15 @@ describe('POST: /comment', () => {
 
         try{
             await commentService.saveComment(payload); 
-            fail('commentService.saveComment failed request'); //Reject saveComment due to missing name
+            fail('commentService.saveComment failed request');
         }catch(err){
-            expect(err).toBeDefined(); //part of assertion syntax
+            expect(err).toBeDefined();
         }
     });
 
     //ID Validation Test
     test('Inserted ID field should fail', async () => {
-        mockCommentDao.saveComment.mockImplementation(input => input); //return its self object
+        mockCommentDao.saveComment.mockImplementation(input => input);
 
         const payload = {
             id: 15,
@@ -141,12 +134,12 @@ describe('POST: /comment', () => {
         };
         const result = await commentService.saveComment(payload);
 
-        expect(result.id).not.toBe(payload.id); //Compared id should be undefined.
+        expect(result.id).not.toBe(payload.id);
     });
 
     //Inserting Extra Fields Test
     test('Inserted extra field should fail', async () => {
-        mockCommentDao.saveComment.mockImplementation(input => input); //return its self object
+        mockCommentDao.saveComment.mockImplementation(input => input);
 
         const payload = {
             comment: 'Title',
@@ -157,7 +150,7 @@ describe('POST: /comment', () => {
         };
         const result = await commentService.saveComment(payload)  as any;
 
-        expect(result.extraFieldInput).not.toBeDefined(); //Call extra property.
+        expect(result.extraFieldInput).not.toBeDefined();
     });
 });
 
@@ -166,7 +159,6 @@ describe('POST: /comment', () => {
 describe('PATCH: /comments', () => {
     //Patch success test
     test('Successful patch', async () => {
-        //expect.assertions(1);
         mockCommentDao.patchComment.mockImplementation(input => input);
 
         const payload = {
@@ -178,14 +170,12 @@ describe('PATCH: /comments', () => {
         };
         const result = await commentService.patchComment(payload);
 
-        //expect(result).toBeTruthy();
-        expect(payload).not.toBeInstanceOf(Comment); //Set to not author in input
-        expect(result).toBeInstanceOf(Comment); //Transformed to person in result
+        expect(payload).not.toBeInstanceOf(Comment); 
+        expect(result).toBeInstanceOf(Comment);
     });
 
     //Expected server error test
     test('Throw new Error status 400', async () => {
-        //expect.assertions(1);
         mockCommentDao.patchComment.mockReturnValue(undefined);
 
         const payload = {
@@ -199,10 +189,8 @@ describe('PATCH: /comments', () => {
         
         try{
             await commentService.patchComment(payload);
-            //const result = await commentService.patchComment(payload);
         }catch(err){
             expectedError = err;
-            //expect(err).toBeTruthy();
         }
         expect(expectedError).toBeDefined();
     });
@@ -213,8 +201,6 @@ describe('DELETE: /comments/:id', () => {
     //Read success test
     test('Successful delete of id', async () => {
         expect.assertions(1);
-        //mockCommentDao.saveComment.mockImplementation(input => input);
-
         const result = await commentService.deleteCommentById(1);
 
         try{
@@ -222,7 +208,5 @@ describe('DELETE: /comments/:id', () => {
         }catch(err){
             expect(err).toBeDefined();
         }
-        //expect(payload).not.toBeInstanceOf(Comment); //Set to not comment in input
-        //expect(result).toBeInstanceOf(Comment); //Transformed to person in result
     });
 });

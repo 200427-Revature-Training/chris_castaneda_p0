@@ -1,10 +1,11 @@
+/* istanbul ignore file */
 import { dbConnection } from '../daos/db';
 import { Comment, CommentRow } from '../models/Comment';
 import { ArticleComments, ArticleCommentsRow } from '../models/ArticleComments';
 /**Database query logic */
 
 
-//Retrieve all
+/**Retrieve all */
 export function getAllComments(): Promise<Comment[]> { //Promise<Comment[]> returning promise
     const sql = 'SELECT * FROM commenting'; //Query database
     
@@ -15,7 +16,7 @@ export function getAllComments(): Promise<Comment[]> { //Promise<Comment[]> retu
     });
 };
 
-//Retrieve comments by post Id
+/**Retrieve comments by post Id */
 export async function getAllCommentsByPostId(postId: number): Promise<ArticleComments[]> {
     const sql = `SELECT \
 	            posts.title, \
@@ -27,7 +28,7 @@ export async function getAllCommentsByPostId(postId: number): Promise<ArticleCom
                 WHERE posts.id = $1`;
                  
     const result = await dbConnection.query<ArticleCommentsRow>(sql, [postId]); //Async/Await: Unwrap promise
-    return result.rows.map(ArticleComments.from); //return promise<[]>
+    return result.rows.map(ArticleComments.from); 
 };
 
 
@@ -35,7 +36,7 @@ export async function getAllCommentsByPostId(postId: number): Promise<ArticleCom
 interface Exists {
     exists: boolean;
 };
-//Valid comment by id in database
+/**Valid comment by id in database */
 export async function commentExists(commentId: number): Promise<boolean> {
     const sql = `SELECT EXISTS(SELECT id FROM commenting WHERE id = $1)`; //Validate user via database by boolean
     
@@ -43,7 +44,7 @@ export async function commentExists(commentId: number): Promise<boolean> {
     return result.rows[0].exists; //if boolean: 0, user exists
 };
 
-//Insert
+/*Insert */
 export function saveComment(comment: Comment): Promise<Comment> {
     const sql = `INSERT INTO commenting (comment_body, publish_date, post_id, authors_id) \
     VALUES ($1, $2, $3, $4) RETURNING *`; //Returning Data after insertion 
@@ -56,7 +57,7 @@ export function saveComment(comment: Comment): Promise<Comment> {
     ]).then(result => result.rows.map(row => Comment.from(row))[0]);
 };
 
-//Update by sql coalesce
+/**Update by sql coalesce */
 export function patchComment(comment: Comment): Promise<Comment> {
     const sql = `UPDATE commenting SET \
                 comment_body = COALESCE($2, comment_body), \
@@ -74,7 +75,7 @@ export function patchComment(comment: Comment): Promise<Comment> {
     ]).then(result => result.rows.map(row => Comment.from(row))[0]);
 };
 
-//Delete by Id
+/**Delete by Id */
 export function deleteCommentById(id: number): Promise<Comment> {
     const sql = `DELETE FROM commenting WHERE id = $1 RETURNING *`;
 

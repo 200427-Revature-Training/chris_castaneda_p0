@@ -5,10 +5,6 @@ import { ArticleComments } from '../models/ArticleComments';
 /**Export comments from database */
 export const commentRouter = express.Router();
 
-
-
-/**CRUD from database */
-
 /**READ All */
 commentRouter.get('', (request, response, next) => { //localhost:3000/comment
     commentService.getAllComments()
@@ -17,7 +13,6 @@ commentRouter.get('', (request, response, next) => { //localhost:3000/comment
                 response.json(comments); //store in json
                 next();
             }).catch(err => {//Request error handler
-                //console.log(err);
                 response.sendStatus(500);
         });
 });
@@ -31,7 +26,6 @@ commentRouter.get('/posts/:id', async (request, response, next) => { //request p
         posts = await commentService.getAllCommentsByPostId(postId); //unwrap promise
     }catch(err){ 
         response.sendStatus(500); //send status promise not met
-        //console.log(err);
         return;
     }
     
@@ -51,10 +45,9 @@ commentRouter.post('', (request, response, next) => { //localhost:3000/comment
     commentService.saveComment(comment) //returns new object to database
         .then(newComment => {
             response.status(201);
-            response.json(newComment); //return new object
+            response.json(newComment);
             next();
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500);
             next();
         }); 
@@ -72,7 +65,6 @@ commentRouter.patch('', (request, response, next) => {
                 response.json(updatedComment);
             }
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500);
         }).finally(() => {
             next();
@@ -88,11 +80,9 @@ commentRouter.delete('/:id', (request, response, next) => {
             if(!comment){ 
                 response.sendStatus(404);//if object does not exist
             }else{
-                //console.log(`Comment deleted at post id:${id}`);
                 response.json(comment);
             }
         }).catch(err => {
-            //console.log(err);
             response.sendStatus(500); //if recieving datbase issue's
             next();
         });

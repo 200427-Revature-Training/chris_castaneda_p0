@@ -14,19 +14,6 @@ app.use(bodyParser.json());
 app.use('/comments', commentRouter);
 
 
-
-
-/**
- * test ex:GET /people/:id
-// 1. Write test that asserts that normal behavior should return a JSON payload with status 200
-// 2. Write test that asserts if no object is returned (service returns falsy) status 404
-// 3. Write test that asserts if service throws error, status 500
- */
-
- 
-
-/**Request fake http methods */
-
 /**READ All */
 describe('GET: /comments',() => {
     //GET success test

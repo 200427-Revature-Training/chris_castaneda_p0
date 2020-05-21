@@ -1,10 +1,11 @@
+/* istanbul ignore file */
 import { dbConnection} from '../daos/db';
 import { Post, PostRow } from '../models/Post';
 import { AuthorsPosts, AuthorsPostsRow } from '../models/AuthorsPosts';
 /**Database query logic */
 
 
-//Retrieve all
+/**Retrieve all */
 export function getAllPosts(): Promise<Post[]> { //Promise<Post[]> returning promise
     const sql = 'SELECT * FROM posts'; //Query database
     
@@ -15,7 +16,7 @@ export function getAllPosts(): Promise<Post[]> { //Promise<Post[]> returning pro
     });
 };
 
-//Retrieve post by id
+/**Retrieve post by id */
 export async function getPostById(id: number): Promise<Post[]> {
     const sql = `SELECT \
                 posts.*, \
@@ -36,7 +37,7 @@ export async function getPostById(id: number): Promise<Post[]> {
 interface Exists {
     exists: boolean;
 };
-//Valid post by id
+/**Valid post by id */
 export async function postExists(postId: number): Promise<boolean> {
     const sql = `SELECT EXISTS(SELECT id FROM posts WHERE id = $1)`; //Validate user via database by boolean
     
@@ -58,11 +59,11 @@ export async function getPostByAuthorId(authorId: number): Promise<AuthorsPosts[
                 LEFT JOIN authors ON posts.authors_id = authors.id \
                 WHERE authors.id = $1`;
                  
-    const result = await dbConnection.query<AuthorsPostsRow>(sql, [authorId]); //Async/Await: Unwrap promise
+    const result = await dbConnection.query<AuthorsPostsRow>(sql, [authorId]);
     return result.rows.map(AuthorsPosts.from); //return promise<[]>
 };
 
-//Create
+/**Create */
 export function savePost(post: Post): Promise<Post> {
     const sql = `INSERT INTO posts (title, body, publish_date, authors_id) \
     VALUES ($1, $2, $3, $4) RETURNING *`; //Returning Data after insertion 
@@ -75,7 +76,7 @@ export function savePost(post: Post): Promise<Post> {
     ]).then(result => result.rows.map(row => Post.from(row))[0]);
 };
 
-//Update by sql coalesce
+/**Update by sql coalesce */
 export function patchPost(post: Post): Promise<Post> {
     const sql = `UPDATE posts SET \
                 title = COALESCE($2, title), \
@@ -91,7 +92,7 @@ export function patchPost(post: Post): Promise<Post> {
     ]).then(result => result.rows.map(row => Post.from(row))[0]);
 };
 
-//Delete by Id
+/**Delete by Id */
 export function deletePostById(id: number): Promise<Post> {
     const sql = `DELETE FROM posts WHERE id = $1 RETURNING *`;
 
